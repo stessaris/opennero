@@ -56,8 +56,10 @@ namespace OpenNero
 
     /// 8 bit char type
     typedef char        char8_t;
+    #if (!defined(__CHAR16_TYPE__) || !(__cplusplus > 199711L))
     /// 16 bit char type
     typedef wchar_t     char16_t;
+    #endif
 
 } // end OpenNero
 
