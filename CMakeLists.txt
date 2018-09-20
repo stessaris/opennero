@@ -3,9 +3,9 @@
 # > cmake .
 # > make
 
-# require at least cmake 2.6
+# require at least cmake 3.1
 IF(COMMAND cmake_minimum_required)
-  CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+  CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 ENDIF(COMMAND cmake_minimum_required)
 
 # the project is called OpenNERO
@@ -15,6 +15,9 @@ PROJECT(OpenNERO)
 IF(COMMAND cmake_policy)
   CMAKE_POLICY(SET CMP0003 NEW)
 ENDIF(COMMAND cmake_policy)
+
+# require C++11
+SET(CMAKE_CXX_STANDARD 11)
 
 # default build type
 IF( NOT CMAKE_BUILD_TYPE )
