@@ -110,18 +110,17 @@ IF (APPLE)
   SET(MACOSX_BUNDLE_NIB_FILE "MainMenu")
   CONFIGURE_FILE(${CMAKE_MODULE_PATH}/OpenNERO-Info.plist ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
   ADD_EXECUTABLE(OpenNERO MACOSX_BUNDLE main.cc ${OpenNERO_sources} ${OpenNERO_headers})
-  GET_TARGET_PROPERTY(OpenNERO_LOCATION OpenNERO LOCATION)
-  STRING(REGEX REPLACE "\\.app/Contents/MacOS/OpenNERO" "" OpenNERO_LOCATION "${OpenNERO_LOCATION}")
-  SET(OpenNERO_APP_RESOURCES "${OpenNERO_LOCATION}.app/Contents/Resources")
+  SET(OpenNERO_LOCATION "$<TARGET_FILE_DIR:OpenNERO>/../..")
+  SET(OpenNERO_APP_RESOURCES "${OpenNERO_LOCATION}/Contents/Resources")
   GET_PROPERTY(OpenNERO_JAVA_JAR GLOBAL PROPERTY OpenNERO_JAVA_JAR)
   ADD_CUSTOM_TARGET(CopyStuff ALL
     COMMAND mkdir -p ${OpenNERO_APP_RESOURCES}
     COMMAND rsync -auv --delete-excluded --exclude='.svn' --exclude='.git' ${OpenNERO_SOURCE_DIR}/mods/* ${OpenNERO_APP_RESOURCES}
-    COMMAND cp -f ${CMAKE_CURRENT_BINARY_DIR}/Info.plist ${OpenNERO_LOCATION}.app/Contents
-    COMMAND find ${OpenNERO_LOCATION}.app/Contents -name "\".svn\"" | xargs rm -rf
+    COMMAND cp -f ${CMAKE_CURRENT_BINARY_DIR}/Info.plist ${OpenNERO_LOCATION}/Contents
+    COMMAND find ${OpenNERO_LOCATION}/Contents -name "\".svn\"" | xargs rm -rf
     COMMAND cp -f ${OpenNERO_JAVA_JAR} ${OpenNERO_APP_RESOURCES}/TrainingWindow.jar)
   ADD_CUSTOM_TARGET(BundleStuff ALL
-    COMMAND ${CMAKE_MODULE_PATH}/bundle.py ${OpenNERO_LOCATION}.app OpenNERO)
+    COMMAND ${CMAKE_MODULE_PATH}/bundle.py ${OpenNERO_LOCATION} OpenNERO)
   ADD_DEPENDENCIES(BundleStuff OpenNERO)
 ELSEIF (UNIX)
   ADD_EXECUTABLE(OpenNERO main.cc ${OpenNERO_sources} ${OpenNERO_headers})
