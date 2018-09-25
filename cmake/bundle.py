@@ -3,6 +3,8 @@
 # Create the OpenNERO MacOS bundle by copying all the local dynamic libraries
 # and adjusting their link paths appropriately
 
+from __future__ import print_function
+
 import sys
 import os
 from shutil import copy
@@ -25,7 +27,7 @@ class Bundler:
         self.libprefix = '@executable_path/../Libraries/'
         if not os.path.exists(self.libpath):
             os.mkdir(self.libpath)
-            print 'creating ', self.libpath
+            print('creating ' + self.libpath)
         assert(os.path.isdir(self.libpath))
 
     def bundle(self, target = None):
@@ -53,15 +55,15 @@ class Bundler:
             if not os.path.exists(lib):
                 lib = os.path.join('/usr/local/lib/',lib) # best guess
                 if not os.path.exists(lib):
-                    print >> sys.stderr, "Could not find library " + lib
+                    print("Could not find library " + lib, file=sys.stderr)
                     sys.exit(1)
             copy(lib,self.libpath)
             newlib = os.path.join(self.libpath, libname)
-            os.chmod(newlib, 0755)
+            os.chmod(newlib, 0o755)
             newid = self.libprefix + libname
             assert(os.system('install_name_tool -id %s %s' % (newid, newlib)) == 0)
             self.libraries[id] = newid
-            print "added %s" % newid
+            print("added %s" % newid)
             self.bundle(newlib)
         assert(newid)
         assert(os.system('install_name_tool -change %s %s %s' % (id, newid, target)) == 0)
