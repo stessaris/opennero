@@ -23,9 +23,9 @@ set(Boost_DEBUG 1)
 # if linking against a custom (recent) version of boost without removing the system version, try:
 # SET(Boost_USE_MULTITHREADED "NO")
 
-FIND_PACKAGE (Boost COMPONENTS python filesystem serialization system date_time)
+FIND_PACKAGE (Boost COMPONENTS python27 filesystem serialization system date_time)
 IF (${Boost_MINOR_VERSION} LESS 35)
-  FIND_PACKAGE (Boost COMPONENTS python filesystem serialization date_time)
+  FIND_PACKAGE (Boost COMPONENTS python27 filesystem serialization date_time)
 ENDIF (${Boost_MINOR_VERSION} LESS 35)
 
 IF (NOT Boost_FOUND)
