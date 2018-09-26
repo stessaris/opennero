@@ -72,6 +72,15 @@ IF (${DETECT_HOMEBREW} EQUAL 0)
     LIST(APPEND CMAKE_PREFIX_PATH  "${HOMEBREW_PREFIX}")
     LIST(APPEND CMAKE_LIBRARY_PATH "${HOMEBREW_PREFIX}/lib")
     LIST(APPEND CMAKE_INCLUDE_PATH "${HOMEBREW_PREFIX}/include")
+    # Use Python2 by Homebrew
+    SET(PYTHON_EXECUTABLE "${HOMEBREW_PREFIX}/opt/python@2/bin/python")
+    IF(APPLE)
+      SET(HOMEBREW_PY_PREFIX "${HOMEBREW_PREFIX}/opt/python@2/Frameworks/Python.framework/Versions/Current")
+    ELSE()
+      SET(HOMEBREW_PY_PREFIX "${HOMEBREW_PREFIX}/opt/python@2")
+    ENDIF(APPLE)
+    SET(PYTHON_LIBRARY "${HOMEBREW_PY_PREFIX}/lib/libpython2.7${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    SET(PYTHON_INCLUDE_DIR "${HOMEBREW_PY_PREFIX}/include/python2.7")
 ENDIF (${DETECT_HOMEBREW} EQUAL 0)
 
 # if the system has doxygen, make a doxygen target
